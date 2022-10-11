@@ -51,6 +51,7 @@ func (exec *EXEC) Exports() modules.Exports {
 func (*EXEC) Command(name string, args []string, option CommandOptions) string {
 	cmd := exec.Command(name, args...)
 	if option.Dir != "" {
+		log.Printf("running the command from dir: " + option.Dir)
 		cmd.Dir = option.Dir
 	}
 	if option.Stream {
@@ -60,7 +61,7 @@ func (*EXEC) Command(name string, args []string, option CommandOptions) string {
 		if err != nil {
 			log.Printf(err.Error() + " on command: " + name + " " + strings.Join(args, " "))
 		}
-		return ""
+		return "CMD_ERRORED"
 	}
 	out, err := cmd.Output()
 	if err != nil {
